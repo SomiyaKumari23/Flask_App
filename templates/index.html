@@ -99,7 +99,7 @@
     <ul>
         {% for msg in messages %}
         <li>
-            {{ msg }}
+            {{ msg.content }}
             <form method="POST" action="{{ url_for('delete', msg_id=loop.index0) }}">
                 <button class="delete-btn">Delete</button>
             </form>
