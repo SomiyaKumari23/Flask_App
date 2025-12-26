@@ -1,14 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
+import os
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 
 # Database connection
+load_dotenv()
+
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="Lionattack@123",
-    database="flask_app"
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME")
 )
 cursor = db.cursor(dictionary=True) 
 
@@ -24,7 +29,7 @@ def index():
             db.commit()
         return redirect(url_for("index"))
 
-    cursor.execute("SELECT content FROM messages ORDER BY id DESC")
+    cursor.execute("SELECT id,content FROM messages ORDER BY id DESC")
     messages = cursor.fetchall()
     return render_template("index.html", messages=messages)
 
